@@ -148,7 +148,7 @@ def _parse_datum(info, datum):
     if 'Name' in info and info['Name'] == 'Ceased':
         return ""
     if datum.get('NullValue', False):
-        return "%s:NULL" % info['Name']
+        return '"%s":"-1"' % info['Name']
     column_type = info['Type']
 
     # If the column is of TimeSeries Type
