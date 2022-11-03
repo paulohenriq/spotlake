@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from gcp_metadata import region_mapping
+from utility import slack_msg_sender
 
 
 def get_url_list(page_url):
@@ -21,6 +22,7 @@ def get_url_list(page_url):
             url_list.append(iframe.select_one(
                 'iframe').get_attribute_list('src')[0])
     else:
+        slack_msg_sender.send_slack_message(f"gcp load_vminstance_pricing.py line 24: {response.status_code}")
         logging.error(response.status_code)
 
     return url_list
@@ -115,6 +117,7 @@ def extract_price(table, output):
                 pass
 
             except Exception as e:
+                slack_msg_sender.send_slack_message(f"gcp load_vminstance_pricing.py line 24: {e}")
                 logging.error(e)
 
     return output

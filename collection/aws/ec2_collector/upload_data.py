@@ -4,6 +4,7 @@ import pandas as pd
 import pickle
 import os
 from botocore.config import Config
+from utility import slack_msg_sender
 from botocore.exceptions import ClientError
 
 
@@ -25,10 +26,14 @@ def submit_batch(records, counter, recursive):
     except write_client.exceptions.RejectedRecordsException as err:
         re_records = []
         for rr in err.response["RejectedRecords"]:
+            err_msg = "upload_data.py (26 line): " + rr['Reason']
+            slack_msg_sender.send_slack_message(err_msg)
             print(rr['Reason'])
             re_records.append(records[rr["RecordIndex"]])
         submit_batch(re_records, counter, recursive + 1)
     except Exception as err:
+        err_msg = "upload_data.py (32 line): " + err
+        slack_msg_sender.send_slack_message(err_msg)
         print(err)
         exit()
 
