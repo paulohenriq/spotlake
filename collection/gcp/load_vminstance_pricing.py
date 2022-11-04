@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from gcp_metadata import region_mapping
-from utility import slack_msg_sender
+from utility import slack_msg_sender, current_module_info_getter
 
 
 def get_url_list(page_url):
@@ -22,7 +22,7 @@ def get_url_list(page_url):
             url_list.append(iframe.select_one(
                 'iframe').get_attribute_list('src')[0])
     else:
-        slack_msg_sender.send_slack_message(f"gcp load_vminstance_pricing.py line 24: {response.status_code}")
+        slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {response.status_code}")
         logging.error(response.status_code)
 
     return url_list
@@ -47,6 +47,7 @@ def get_table(url):
             else:
                 return None
     else:
+        slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {response.status_code}")
         logging.error(response.status_code)
         logging.error(url)
 
@@ -117,7 +118,8 @@ def extract_price(table, output):
                 pass
 
             except Exception as e:
-                slack_msg_sender.send_slack_message(f"gcp load_vminstance_pricing.py line 24: {e}")
+                slack_msg_sender.send_slack_message(
+                    f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {e}")
                 logging.error(e)
 
     return output

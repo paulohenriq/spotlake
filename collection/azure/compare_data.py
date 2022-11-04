@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from utility import slack_msg_sender
+from utility import slack_msg_sender, current_module_info_getter
 
 # compare previous collected workload with current collected workload
 # return changed workload
@@ -36,7 +36,7 @@ def compare(previous_df, current_df, workload_cols, feature_cols):
                 prev_idx += 1
                 continue
             else:
-                slack_msg_sender.send_slack_message("azure compare_data.py line 38: workload error")
+                slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {prev_workload}, {curr_workload} workload error")
                 raise Exception('workload error')
             break
         elif prev_idx == len(previous_indices):
@@ -47,7 +47,7 @@ def compare(previous_df, current_df, workload_cols, feature_cols):
                 curr_idx += 1
                 continue
             else:
-                slack_msg_sender.send_slack_message("azure compare_data.py line 49: workload error")
+                slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {prev_workload}, {curr_workload} workload error")
                 raise Exception('workload error')
             break
 
@@ -64,7 +64,7 @@ def compare(previous_df, current_df, workload_cols, feature_cols):
                 prev_idx += 1
                 continue
             else:
-                slack_msg_sender.send_slack_message("azure compare_data.py line 66: workload error")
+                slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {prev_workload}, {curr_workload} workload error")
                 raise Exception('workload error')
         else:
             if prev_feature != curr_feature:

@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 from botocore.config import Config
 from botocore.exceptions import ClientError
-from utility import slack_msg_sender
+from utility import slack_msg_sender, current_module_info_getter
 
 
 session = boto3.session.Session(region_name='us-west-2')
@@ -27,7 +27,7 @@ def submit_batch(records, counter, recursive):
         result = write_client.write_records(DatabaseName=DATABASE_NAME, TableName=TABLE_NAME, Records=records,CommonAttributes={})
 
     except write_client.exceptions.RejectedRecordsException as err:
-        slack_msg_sender.send_slack_message(f"azure_collect_lambda.py line 29: {err}")
+        slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {err}")
         print(err)
         re_records = []
         for rr in err.response["RejectedRecords"]:
@@ -35,7 +35,7 @@ def submit_batch(records, counter, recursive):
         submit_batch(re_records, counter, recursive + 1)
         exit()
     except Exception as err:
-        slack_msg_sender.send_slack_message(f"azure_collect_lambda.py line 37: {err}")
+        slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {err}")
         print(err)
         exit()
 

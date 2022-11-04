@@ -7,7 +7,7 @@ import os
 import gzip
 from ortools.linear_solver import pywraplp
 from load_metadata import num_az_by_region
-from utility import slack_msg_sender
+from utility import slack_msg_sender, current_module_info_getter
 
 
 BUCKET_NAME = "spotlake"
@@ -62,7 +62,7 @@ def bin_packing(weights, capacity, algorithm):
                     bin_index_list.append((bin_items, bin_weight))
         return bin_index_list
     else:
-        slack_msg_sender.send_slack_message('workload_binpacking.py line 64: The problem does not have an optimal solution.')
+        slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: The problem does not have an optimal solution.")
         print('The problem does not have an optimal solution.')
 
 
