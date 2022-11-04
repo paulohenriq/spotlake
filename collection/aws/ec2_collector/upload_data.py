@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 import os
 from botocore.config import Config
-from utility import slack_msg_sender, current_module_info_getter
+from utility import slack_msg_sender
 from botocore.exceptions import ClientError
 
 
@@ -26,12 +26,12 @@ def submit_batch(records, counter, recursive):
     except write_client.exceptions.RejectedRecordsException as err:
         re_records = []
         for rr in err.response["RejectedRecords"]:
-            slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {rr['Reason']}")
+            slack_msg_sender.send_slack_message(rr['Reason'])
             print(rr['Reason'])
             re_records.append(records[rr["RecordIndex"]])
         submit_batch(re_records, counter, recursive + 1)
     except Exception as err:
-        slack_msg_sender.send_slack_message(f"{current_module_info_getter.get_current_module_name()}, {current_module_info_getter.get_current_function_name()} line {current_module_info_getter.get_current_line_no()}: {err}")
+        slack_msg_sender.send_slack_message(err)
         print(err)
         exit()
 
