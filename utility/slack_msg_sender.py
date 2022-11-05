@@ -1,6 +1,6 @@
 import requests
 
-url = "https://hooks.slack.com/services/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"
+url = ""
 
 
 def send_slack_message(msg):
