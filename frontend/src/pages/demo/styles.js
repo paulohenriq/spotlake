@@ -16,8 +16,7 @@ export const demo = styled.div`
   padding-top: 10px;
   color: #fff;
 `;
-export const vendor = styled.div`
-  width: 50%;
+export const vendor = styled.div` 
   color: #000;
   margin: 50px auto;
   display: flex;
@@ -26,7 +25,7 @@ export const vendor = styled.div`
   gap: 30px;
 `;
 export const vendorBtn = styled(Button)`
-  width: 30%;
+  width: 180px;
   min-width: max-content !important;
   border: none;
   box-shadow: 0px 0px 4px rgba(0,0,0,0.26);
@@ -65,7 +64,7 @@ export const calimg = styled.img`
 `;
 export const table = styled.div`
   width: 100%;
-  height: 1000px;
+  height: 100vh;
   overflow-x: scroll;
   position: relative;
   margin-bottom: 50px;
@@ -209,7 +208,7 @@ export const chart = styled(LineChart)`
 export const progressBar = styled.div`
   z-index: 1;
   position: absolute;
-  top: 15%;
+  top: 28%;
   right: 10%;
   width: 80%;
   & .MuiLinearProgress-root {
@@ -220,4 +219,9 @@ export const progressBar = styled.div`
   & .MuiLinearProgress-bar {
    background-color: ${(props) => (props.vendor==='AWS' ? '#f68d11' : props.vendor ==='GCP' ? 'rgb(234, 67, 53)': '#0067b8')};
   }
+`;
+export const noticeMsg = styled.p`
+  color: #000;
+  font-size: 14px;
+  margin: 10px 0;
 `;
