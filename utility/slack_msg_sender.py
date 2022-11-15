@@ -1,7 +1,10 @@
 import requests
 import inspect
+import boto3
 
-url = "https://hooks.slack.com/services/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"
+ssm = boto3.client('ssm')
+parameter = ssm.get_parameter(Name="/url/slack/system-monitoring", WithDecryption=False)
+url = parameter['Parameter']['Value']
 
 
 def send_slack_message(msg):
@@ -14,4 +17,5 @@ def send_slack_message(msg):
     slack_data = {
         "text": message
     }
+
     requests.post(url, json=slack_data)
