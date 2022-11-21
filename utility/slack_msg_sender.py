@@ -30,6 +30,3 @@ def get_webhook_url():
         url = os.environ.get('error-notification-slack-webhook-url')
 
     return url
-
-
-send_slack_message("testtest")
