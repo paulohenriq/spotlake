@@ -1,3 +1,4 @@
+#lambda의 경우 requests 모듈은 layer로 준비필요
 import requests
 import inspect
 import boto3
