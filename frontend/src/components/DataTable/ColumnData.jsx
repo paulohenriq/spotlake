@@ -182,11 +182,32 @@ const ColumnData = () =>{
         },
         { field: 'time', headerName: 'Date', type: 'date', flex: 2, headerAlign: 'center' }
     ];
+    //BenchMark columns
+    const BenchMarkColumns = [
+        {field : 'vendor', headerName : 'Vendor', flex: 1},
+        {field : 'instanceCategory', headerName : 'Instance Category', flex: 1},
+        {field : 'instanceType', headerName : 'Instance type', flex: 1},
+        {field : 'cpuCore', headerName : 'CPU core', flex: 1},
+        {field : 'memSize', headerName : 'Mem Size', flex: 1},
+        {field : 'cpuManufacture', headerName : 'CPUManufacture', flex: 1},
+        {field : 'coreMarkScoreVendor', headerName : 'VendorScore', flex: 1},
+        {field : 'coreMarkScoreMeasure', headerName : 'Measure', flex: 1},
+        {field : 'coreMarkScorePredict', headerName : 'Predict', flex: 1},
+    ];
+    const BenchMarkColumnsGroup = [
+        {
+            groupId: 'CoreMark Score',
+            description: '',
+            children: [{ field: 'coreMarkScoreVendor' }, {field: 'coreMarkScoreMeasure'},{field: 'coreMarkScorePredict'}],
+        },
+    ];
     return {
         columns,
         GCPcolumnGroup,
         GCPcolumns,
-        AZUREcolumns
+        AZUREcolumns,
+        BenchMarkColumns,
+        BenchMarkColumnsGroup
     }
 }
 
