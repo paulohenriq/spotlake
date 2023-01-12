@@ -25,6 +25,7 @@ function Demo () {
   const [vendor, setVendor] = useState('AWS');
   const [GCPData, setGCPData] = useState([]);
   const [AZUREData, setAZUREData] = useState([]);
+  const [BenchMarkData, setBenchMarkData] = useState([]);
   const [progress, setProgress]= useState({
     AWS: {
       loading: false,
@@ -38,6 +39,10 @@ function Demo () {
       loading: false,
       percent: 0,
     },
+    BenchMark: {
+      loading: false,
+      percent: 0,
+    }
   });
   useEffect(() => {
     setWidth(window.innerWidth*0.6);
@@ -57,6 +62,10 @@ function Demo () {
       } else if (vendor === 'AZURE' && AZUREData.length === 0) {
         getLatestData(vendor, "https://spotlake.s3.us-west-2.amazonaws.com/latest_data/latest_azure.json", setAZUREData);
       }
+      // BenchMarkData get url
+      // else if (vendor === 'BenchMark' && BenchMarkData.length === 0) {
+      //   getLatestData(vendor, '', setBenchMarkData)
+      // }
     }
   },[vendor])
   useEffect(() => { //데이터 가져오기 한번 끝날때마다 한곳에 모으기
@@ -168,31 +177,41 @@ function Demo () {
             <style.vendorIcon src={process.env.PUBLIC_URL + '/icon/awsIcon.png'} alt="awsIcon"/>
             <style.vendorTitle>Amazon Web Services</style.vendorTitle>
           </style.vendorBtn>
-          {/*<style.vendorBtn*/}
-          {/*  onClick={() => {setVendor('GCP')}}*/}
-          {/*  clicked={vendor==='GCP'}*/}
-          {/*  disabled={progress[vendor].loading}*/}
-          {/*>*/}
-          {/*  <style.vendorIcon src={process.env.PUBLIC_URL + '/icon/gcpIcon.png'} alt="awsIcon"/>*/}
-          {/*  <style.vendorTitle>Google Cloud Platform</style.vendorTitle>*/}
-          {/*</style.vendorBtn>*/}
-          {/*<style.vendorBtn*/}
-          {/*  onClick={() => {setVendor('AZURE')}}*/}
-          {/*  clicked={vendor==='AZURE'}*/}
-          {/*  disabled={progress[vendor].loading}*/}
-          {/*>*/}
-          {/*  <style.vendorIcon src={process.env.PUBLIC_URL + '/icon/azureIcon.png'} alt="awsIcon"/>*/}
-          {/*  <style.vendorTitle>Microsoft Azure</style.vendorTitle>*/}
-          {/*</style.vendorBtn>*/}
+          <style.vendorBtn
+            onClick={() => {setVendor('GCP')}}
+            clicked={vendor==='GCP'}
+            disabled={progress[vendor].loading}
+          >
+            <style.vendorIcon src={process.env.PUBLIC_URL + '/icon/gcpIcon.png'} alt="awsIcon"/>
+            <style.vendorTitle>Google Cloud Platform</style.vendorTitle>
+          </style.vendorBtn>
+          <style.vendorBtn
+            onClick={() => {setVendor('AZURE')}}
+            clicked={vendor==='AZURE'}
+            disabled={progress[vendor].loading}
+          >
+            <style.vendorIcon src={process.env.PUBLIC_URL + '/icon/azureIcon.png'} alt="awsIcon"/>
+            <style.vendorTitle>Microsoft Azure</style.vendorTitle>
+          </style.vendorBtn>
+          <style.vendorBtn
+              onClick={() => {setVendor('BenchMark')}}
+              clicked={vendor==='BenchMark'}
+              disabled={progress[vendor].loading}
+          >
+            <style.vendorIcon src={process.env.PUBLIC_URL + '/icon/azureIcon.png'} alt="awsIcon"/>
+            <style.vendorTitle>BenchMark</style.vendorTitle>
+          </style.vendorBtn>
         </style.vendor>
-        <Query
-            vendor={vendor}
-            selectedData={selectedData}
-            setSelectedData={setSelectedData}
-            setGetdata={setGetdata}
-            setGCPData={setGCPData}
-            setAZUREData={setAZUREData}
-        />
+        {vendor !== 'BenchMark' &&
+          <Query
+              vendor={vendor}
+              selectedData={selectedData}
+              setSelectedData={setSelectedData}
+              setGetdata={setGetdata}
+              setGCPData={setGCPData}
+              setAZUREData={setAZUREData}
+          />
+        }
         {chartModal &&
           <ChartModal
             width={w}
@@ -212,7 +231,7 @@ function Demo () {
               <style.noticeMsg>After the data is loaded, you can change to other vendors.</style.noticeMsg>
             </style.progressBar>}
             <DataTable
-                rowData={vendor==='AWS' ? getData : vendor === 'GCP' ? GCPData : AZUREData}
+                rowData={vendor==='AWS' ? getData : vendor === 'GCP' ? GCPData : vendor === 'AZURE' ? AZUREData : BenchMarkData }
                 vendor={vendor}
                 toolBar={<CustomToolbar
                     addTool={vendor==='AWS' && <style.alphaBtn variant="contained"
