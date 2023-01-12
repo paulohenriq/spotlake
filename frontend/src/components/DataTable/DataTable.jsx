@@ -14,15 +14,15 @@ const DataTable = ({
     setSelectedData
 }) => {
     const [pageSize, setPageSize] = useState(1000);
-    const {columns,GCPcolumns,GCPcolumnGroup,AZUREcolumns} = ColumnData();
+    const {columns,GCPcolumns,GCPcolumnGroup,AZUREcolumns, BenchMarkColumns, BenchMarkColumnsGroup} = ColumnData();
     const toolBarComponent = () =>(
         toolBar
     )
     return(
         <DataGridTable
             rows={rowData}
-            columns={vendor==='AWS' ? columns : vendor === 'GCP' ? GCPcolumns : AZUREcolumns}
-            columnGroupingModel={GCPcolumnGroup}
+            columns={vendor==='AWS' ? columns : vendor === 'GCP' ? GCPcolumns : vendor==='AZURE'? AZUREcolumns : BenchMarkColumns}
+            columnGroupingModel={vendor === 'GCP' ? GCPcolumnGroup : BenchMarkColumnsGroup}
             experimentalFeatures={{ columnGrouping: true }}
             checkboxSelection
             onSelectionModelChange = {(newSelectionModel) => {
@@ -40,16 +40,19 @@ const DataTable = ({
             pagination
             sx={{
                 '& .MuiDataGrid-main .Mui-checked, .MuiButton-textPrimary':{
-                    color : vendor==='AWS' ? '#f68d11 !important' : vendor === 'GCP' ? 'rgb(234, 67, 53) !important' : '#0067b8 !important'
+                    color : vendor==='AWS' ? '#f68d11 !important' : vendor === 'GCP' ? 'rgb(234, 67, 53) !important' : vendor==='AZURE'? '#0067b8 !important' : '#4caf50 !important'
                 },
                 '& .Mui-selected': {
-                    backgroundColor : vendor==='AWS' ? 'rgba(246, 141, 17, 0.08) !important' : vendor === 'GCP' ? 'rgba(234, 67, 53, 0.08) !important' : 'rgba(0, 103, 184, 0.08) !important'
+                    backgroundColor : vendor==='AWS' ? 'rgba(246, 141, 17, 0.08) !important' : vendor === 'GCP' ? 'rgba(234, 67, 53, 0.08) !important' : vendor==='AZURE'? 'rgba(0, 103, 184, 0.08) !important' : 'rgba(76, 175, 80, 0.08) !important'
                 },
                 '& .MuiDataGrid-cellCheckbox:focus-within' :{
-                    outline : vendor==='AWS' ? 'solid rgba(246, 141, 17, 0.5) 1px !important' : vendor === 'GCP' ?'solid rgba(234, 67, 53, 0.5) 1px !important' : 'solid rgba(0, 103, 184, 0.5) 1px !important'
+                    outline : vendor==='AWS' ? 'solid rgba(246, 141, 17, 0.5) 1px !important' : vendor === 'GCP' ?'solid rgba(234, 67, 53, 0.5) 1px !important' : vendor==='AZURE'? 'solid rgba(0, 103, 184, 0.5) 1px !important' : 'solid rgba(76, 175, 80, 0.5) 1px !important'
                 },
                 "& .MuiDataGrid-cell" : {
                     justifyContent : "center !important",
+                },
+                "& .MuiDataGrid-columnHeaderTitleContainer" :{
+                    justifyContent: "center !important"
                 }
             }}
         />
