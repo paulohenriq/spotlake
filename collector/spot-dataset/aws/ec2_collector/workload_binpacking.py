@@ -90,6 +90,7 @@ def workload_bin_packing(query, capacity, algorithm):
 
 def get_binpacked_workload(filedate):
     # reverse order of credential data
+    s3_client = boto3.client('s3')
     user_cred = None
     try:
         user_cred = pickle.load(open(f"{AWS_CONST.LOCAL_PATH}/user_cred_df.pkl", "rb"))
